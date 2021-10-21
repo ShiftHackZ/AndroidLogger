@@ -1,16 +1,7 @@
-package com.shz.logger
+package com.shz.logger.printer
 
 import android.util.Log
-
-fun interface LoggerPrinter {
-    fun log(
-        loggerType: LoggerType,
-        tag: String,
-        content: String,
-        prefix: String?,
-        throwable: Throwable?
-    )
-}
+import com.shz.logger.LoggerType
 
 class AdvancedLoggerPrinter : LoggerPrinter {
 
