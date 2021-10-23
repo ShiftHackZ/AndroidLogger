@@ -105,3 +105,11 @@ fun Spinner.onSelected(onSelected: (Int) -> Unit) {
         override fun onNothingSelected(p0: AdapterView<*>?) = Unit
     }
 }
+
+fun handle(action: () -> Unit) {
+    try {
+        action()
+    } catch (e: Exception) {
+        //No-op
+    }
+}

@@ -9,6 +9,7 @@ import com.shz.logger.kit.database.LoggerDatabase
 import com.shz.logger.kit.database.LoggerDatabaseProvider
 import com.shz.logger.kit.middleware.DatabaseLoggerMiddleware
 import com.shz.logger.kit.presentation.viewer.LogViewerActivity
+import com.shz.logger.kit.utils.handle
 import com.shz.logger.middleware.LoggerMiddleware
 import java.util.*
 
@@ -26,7 +27,15 @@ import java.util.*
  */
 object LoggerKit {
 
+    /**
+     * Pointer to current [Application] instance.
+     */
     private lateinit var application: Application
+
+    /**
+     * Instance of database collector middleware.
+     * Collects all logs and saves to local sqlite database.
+     */
     private lateinit var databaseMiddleware: DatabaseLoggerMiddleware
 
     /**
@@ -40,18 +49,34 @@ object LoggerKit {
         application = app
         databaseMiddleware = DatabaseLoggerMiddleware(
             LoggerDatabaseProvider.provide().logDao(),
-            Config.sessionId
         )
-
         addMiddleware(databaseMiddleware)
         return this
     }
 
-    fun openLogViewer() {
+    /**
+     * Opens screen with formatted list of previously collected logs.
+     * Allows user to view, search, filter and export logs in runtime.
+     */
+    fun openLogViewer() = handle {
         application.startActivity(
             Intent(application, LogViewerActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
+    }
+
+    /**
+     * Member of [LoggerKit], [Logger].
+     * Duplicates call of corresponding [Logger] method.
+     * Allows to add [LoggerMiddleware] instance.
+     *
+     * @see Logger
+     * @see LoggerMiddleware
+     * @param middleware instance of corresponding [LoggerMiddleware].
+     */
+    fun addMiddleware(middleware: LoggerMiddleware): LoggerKit {
+        Logger.addMiddleware(middleware)
+        return this
     }
 
     /**
@@ -63,8 +88,8 @@ object LoggerKit {
      * @see LoggerMiddleware
      * @param middlewares collection of corresponding [LoggerMiddleware] objects.
      */
-    fun addMiddleware(vararg middlewares: LoggerMiddleware): LoggerKit {
-        middlewares.forEach { Logger.addMiddleware(it) }
+    fun addMiddlewares(vararg middlewares: LoggerMiddleware): LoggerKit {
+        middlewares.forEach(Logger::addMiddleware)
         return this
     }
 
@@ -95,10 +120,25 @@ object LoggerKit {
         return this
     }
 
+    /**
+     * Contains current LoggerKit configuration params.
+     */
     object Config {
+        /**
+         * Defines [LoggerDatabase] file name.
+         */
         const val DB_NAME = "logger_kit"
+
+        /**
+         * Defines [LoggerDatabase] schema version.
+         * Should be increased in case of schema modification.
+         */
         const val DB_VERSION = 1
 
+        /**
+         * Runtime parameter. Contains unique [LoggerKit] session-id, which saved in database.
+         * Allows to perform log entries filtering by single application runtime session.
+         */
         var sessionId: String = ""
     }
 }

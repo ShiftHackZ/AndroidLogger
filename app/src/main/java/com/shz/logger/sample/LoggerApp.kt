@@ -9,8 +9,6 @@ class LoggerApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        LoggerKit
-            .addMiddleware(LoggerNetworkMiddleware(this))
-            .initialize(this)
+        LoggerKit.initialize(this)
     }
 }

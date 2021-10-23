@@ -39,12 +39,24 @@ object Logger {
 
     /**
      * Member of [Logger].
+     * Allows to add [LoggerMiddleware] instances.
+     *
+     * @see LoggerMiddleware
+     * @param middleware instance of corresponding [LoggerMiddleware].
+     */
+    fun addMiddleware(middleware: LoggerMiddleware): Logger {
+        middlewares.add(middleware)
+        return this
+    }
+
+    /**
+     * Member of [Logger].
      * Allows to add one or multiple [LoggerMiddleware] instances.
      *
      * @see LoggerMiddleware
      * @param middlewares collection of corresponding [LoggerMiddleware] objects.
      */
-    fun addMiddleware(vararg middlewares: LoggerMiddleware): Logger {
+    fun addMiddlewares(vararg middlewares: LoggerMiddleware): Logger {
         Logger.middlewares.addAll(middlewares)
         return this
     }
@@ -57,7 +69,7 @@ object Logger {
      * @param middleware instance that needs to be released from middlewares processor.
      */
     fun removeMiddleware(middleware: LoggerMiddleware): Logger {
-        middlewares.remove(middleware)
+        if (!middleware.isWhitelisted) middlewares.remove(middleware)
         return this
     }
 
@@ -68,7 +80,8 @@ object Logger {
      * @see LoggerMiddleware
      */
     fun clearAllMiddlewares(): Logger {
-        middlewares.clear()
+        val nonKitMiddleware = middlewares.filter { it.isWhitelisted }
+        middlewares.removeAll(nonKitMiddleware)
         return this
     }
 

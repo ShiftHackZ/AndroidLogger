@@ -3,15 +3,13 @@ package com.shz.logger.kit.middleware
 import android.util.Log
 import com.shz.logger.LoggerType
 import com.shz.logger.TAG
+import com.shz.logger.kit.LoggerKit
 import com.shz.logger.kit.database.dao.LogDao
 import com.shz.logger.kit.database.entity.LogEntity
 import com.shz.logger.middleware.LoggerMiddleware
 import java.util.concurrent.Executors
 
-class DatabaseLoggerMiddleware(
-    private val dao: LogDao,
-    private val sessionId: String
-) : LoggerMiddleware {
+class DatabaseLoggerMiddleware(private val dao: LogDao) : LoggerMiddleware {
 
     private val executorService = Executors.newFixedThreadPool(EXECUTOR_POOL_SIZE)
 
@@ -35,7 +33,7 @@ class DatabaseLoggerMiddleware(
             dao.insert(
                 LogEntity(
                     id = 0L,
-                    sessionId = sessionId,
+                    sessionId = LoggerKit.Config.sessionId,
                     timestamp = System.currentTimeMillis(),
                     type = loggerType.toString(),
                     className = tag,
