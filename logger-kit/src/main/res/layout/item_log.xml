@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        style="@style/LoggerKit.ItemTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        app:drawableLeftCompat="@drawable/ic_log_item_date"
+        app:drawableStartCompat="@drawable/ic_log_item_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:drawableStart="@drawable/ic_log_item_date"
+        tools:text="23.10.2021 14:30:56" />
+
+    <TextView
+        android:id="@+id/tvSession"
+        style="@style/LoggerKit.ItemTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:drawableLeftCompat="@drawable/ic_log_code"
+        app:drawableStartCompat="@drawable/ic_log_code"
+        app:layout_constraintStart_toStartOf="@+id/tvTimestamp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTimestamp"
+        tools:drawableStart="@drawable/ic_log_code"
+        tools:text="123e4567-e89b-12d3-a456-426655440000" />
+
+    <TextView
+        android:id="@+id/tvType"
+        style="@style/LoggerKit.ItemTypeLabelTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSession"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTimestamp"
+        tools:text="DEBUG" />
+
+    <TextView
+        android:id="@+id/tvClass"
+        style="@style/LoggerKit.ItemTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:drawableLeftCompat="@drawable/ic_log_label_important"
+        app:drawableStartCompat="@drawable/ic_log_label_important"
+        app:layout_constraintStart_toStartOf="@+id/tvSession"
+        app:layout_constraintTop_toBottomOf="@+id/tvSession"
+        tools:drawableStart="@drawable/ic_log_label_important"
+        tools:text="MainActivity" />
+
+    <TextView
+        android:id="@+id/tvPrefix"
+        style="@style/LoggerKit.ItemTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:drawableLeftCompat="@drawable/ic_log_label_important"
+        app:drawableStartCompat="@drawable/ic_log_label_important"
+        app:layout_constraintBottom_toBottomOf="@+id/tvClass"
+        app:layout_constraintStart_toEndOf="@+id/tvClass"
+        app:layout_constraintTop_toTopOf="@+id/tvClass"
+        tools:drawableStart="@drawable/ic_log_label_important"
+        tools:text="onCreate" />
+
+    <TextView
+        android:id="@+id/tvMessage"
+        style="@style/LoggerKit.ItemMessageTextAppearance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        app:drawableLeftCompat="@drawable/ic_log_trending_flat"
+        app:drawableStartCompat="@drawable/ic_log_trending_flat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvClass"
+        tools:drawableStart="@drawable/ic_log_trending_flat"
+        tools:text="Hello World!" />
+
+    <CheckBox
+        android:id="@+id/tvStackTrace"
+        style="@style/LoggerKit.ItemStacktraceTextAppearance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:button="@drawable/ic_log_bug_report"
+        android:buttonTint="@color/colorLoggerKitStacktrace"
+        android:clickable="false"
+        android:drawableTint="@color/colorLoggerKitStacktrace"
+        android:focusable="false"
+        android:gravity="top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMessage"
+        tools:text="Hello World!\nd\nsd\nf" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorLoggerKitDivider"
+        app:layout_constraintTop_toBottomOf="@+id/tvStackTrace" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

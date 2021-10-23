@@ -1,15 +1,23 @@
 package com.shz.logger.sample
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import com.shz.logger.Logger
+import com.shz.logger.kit.LoggerKit
+import com.shz.logger.kit.base.BaseLoggerKitActivity
+import com.shz.logger.sample.databinding.ActivityMainBinding
+import java.lang.RuntimeException
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseLoggerKitActivity<ActivityMainBinding>() {
+
+    override val inflater: (LayoutInflater) -> ActivityMainBinding
+        get() = ActivityMainBinding::inflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Logger.d(this::class, "onCreate", "Hello World!")
+//        Logger.d(this::class, "onCreate", "Hello World!")
+        binding.btnLogs.setOnClickListener {
+            LoggerKit.openLogViewer()
+        }
     }
 }

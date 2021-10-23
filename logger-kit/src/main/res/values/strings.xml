@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logger_kit_viewer_title">LoggerKit</string>
+    <string name="logger_kit_format_entry_count">Total: %1$s log entries</string>
+    <string name="logger_kit_filter_placeholder_timestamp_range">Select date range</string>
+    <string name="logger_kit_filter_placeholder_class">Enter class name</string>
+    <string name="logger_kit_filter_placeholder_tag">Enter tag</string>
+    <string name="logger_kit_filter_placeholder_message">Enter log message</string>
+    <string name="logger_kit_filter_placeholder_session_id">Enter session id</string>
+    <string name="logger_kit_filter_action_clear">Clear filters</string>
+
+    <string-array name="logger_kit_entry_type">
+        <item>LogType: All</item>
+        <item>VERBOSE</item>
+        <item>DEBUG</item>
+        <item>INFO</item>
+        <item>WARNING</item>
+        <item>EXCEPTION</item>
+    </string-array>
+</resources>

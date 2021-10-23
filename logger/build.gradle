@@ -3,9 +3,10 @@ plugins {
     id 'kotlin-android'
 }
 
+apply from: '../dependencies.gradle'
+
 android {
     compileSdk 31
-
     defaultConfig {
         minSdk 16
         targetSdk 31
@@ -15,7 +16,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
-
     buildTypes {
         release {
             minifyEnabled false

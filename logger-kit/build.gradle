@@ -1,6 +1,7 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 apply from: '../dependencies.gradle'
@@ -8,13 +9,12 @@ apply from: '../dependencies.gradle'
 android {
     compileSdk 31
     defaultConfig {
-        applicationId "com.shz.logger.sample"
         minSdk 16
         targetSdk 31
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
     buildTypes {
         release {
@@ -35,9 +35,12 @@ android {
 }
 
 dependencies {
-    api project(':logger-kit')
-    api androidx.core
+    api project(':logger')
+    api kotlin.coroutines
     api androidx.appcompat
     api androidx.constraintlayout
-    api google.material
+    api androidx.recyclerview
+    api androidx.lifecycle
+    api room.runtime
+    kapt room.compiler
 }
