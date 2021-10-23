@@ -40,6 +40,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             LoggerShareUtility.shareAsFile(this, it)
         }
         viewModel.entryCount.observeNotNull(this) {
+            binding.emptyState.root.showcase(it == 0)
             binding.tvStatus.text = getString(R.string.logger_kit_format_entry_count, "$it")
         }
         viewModel.uiFiltersVisibility.observeNotNull(this, binding.filters.root::showcase)

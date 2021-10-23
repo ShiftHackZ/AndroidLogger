@@ -29,6 +29,7 @@ class LogViewerViewModel : ViewModel() {
         uiSettingsVisibility.value = false
         uiFiltersVisibility.value = false
         uiFiltersData.value = filter
+        entryCount.value = 0
     }
 
     fun getLogs() {

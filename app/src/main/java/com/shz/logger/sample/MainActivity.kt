@@ -15,7 +15,7 @@ class MainActivity : BaseLoggerKitActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        Logger.d(this::class, "onCreate", "Hello World!")
+        Logger.d(this::class, "onCreate", "Hello World!")
         binding.btnLogs.setOnClickListener {
             LoggerKit.openLogViewer()
         }
