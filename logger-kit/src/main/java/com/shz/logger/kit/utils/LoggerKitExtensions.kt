@@ -1,5 +1,6 @@
 package com.shz.logger.kit.utils
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.icu.util.Calendar
@@ -7,6 +8,7 @@ import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
@@ -43,6 +45,11 @@ fun Pair<Long, Long>.format(): String {
     return "${start.formatTimestamp(UI_FILTER_DATE_FORMAT)} -- ${
         end.formatTimestamp(UI_FILTER_DATE_FORMAT)
     }"
+}
+
+fun Activity.hideKeyboard() {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+    imm?.hideSoftInputFromWindow(window.decorView.rootView.windowToken, 0)
 }
 
 fun View.showcase(isVisible: Boolean) {

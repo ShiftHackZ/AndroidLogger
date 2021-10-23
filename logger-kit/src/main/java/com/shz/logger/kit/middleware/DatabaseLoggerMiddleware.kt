@@ -39,7 +39,7 @@ class DatabaseLoggerMiddleware(
                     timestamp = System.currentTimeMillis(),
                     type = loggerType.toString(),
                     className = tag,
-                    prefix = prefix.toString(),
+                    prefix = prefix ?: "",
                     message = content,
                     stacktrace = Log.getStackTraceString(throwable)
                 )

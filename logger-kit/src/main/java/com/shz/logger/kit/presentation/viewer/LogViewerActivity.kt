@@ -10,6 +10,7 @@ import com.shz.logger.kit.R
 import com.shz.logger.kit.base.BaseLoggerKitActivity
 import com.shz.logger.kit.databinding.ActivityLogViewerBinding
 import com.shz.logger.kit.export.share.LoggerShareUtility
+import com.shz.logger.kit.presentation.filter.LogFilter
 import com.shz.logger.kit.presentation.filter.mapPositionToLogType
 import com.shz.logger.kit.utils.*
 
@@ -48,14 +49,21 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             binding.filters.etSessionId.clear()
         }
         viewModel.uiFiltersData.observeNotNull(this) {
+            binding.ivFilterIndicator.showcase(it.hashCode() != LogFilter().hashCode())
             binding.filters.btnTimestampRange.text = it.timestampRange?.format()
                 ?: getString(R.string.logger_kit_filter_placeholder_timestamp_range)
         }
     }
 
     private fun setupFiltersUi() {
-        binding.btnFilter.setOnClickListener { viewModel.onFiltersClick() }
-        binding.btnShare.setOnClickListener { viewModel.shareLogs() }
+        binding.btnFilter.setOnClickListener {
+            viewModel.onFiltersClick()
+            hideKeyboard()
+        }
+        binding.btnShare.setOnClickListener {
+            viewModel.shareLogs()
+            hideKeyboard()
+        }
         binding.filters.btnTimestampRange.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) showTimestampDatePickers()
         }
@@ -67,6 +75,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         )
         binding.filters.spinnerLogType.setSelection(0)
         binding.filters.spinnerLogType.onSelected {
+            hideKeyboard()
             mapPositionToLogType(it).let(viewModel::updateFilterLogType)
         }
         binding.filters.etClass.onChanged(viewModel::updateFilterClassName)
@@ -77,6 +86,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun showTimestampDatePickers() {
+        hideKeyboard()
         showDatePicker { start ->
             showDatePicker { end ->
                 viewModel.updateFilterTimestampRange(start.time to end.time)

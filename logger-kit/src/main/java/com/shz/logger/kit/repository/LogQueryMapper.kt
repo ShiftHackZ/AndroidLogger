@@ -4,6 +4,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.shz.logger.kit.database.contract.LogEntityContract
 import com.shz.logger.kit.presentation.filter.LogFilter
 
+private const val SQL_LIKE_PREDICATE = "LIKE '%' || ? || '%'"
+
 fun mapFilterToQuery(filter: LogFilter): SimpleSQLiteQuery {
     val order = "ORDER BY ${LogEntityContract.TIMESTAMP} DESC"
     var request = "SELECT * FROM ${LogEntityContract.TABLE_NAME} "
@@ -13,19 +15,19 @@ fun mapFilterToQuery(filter: LogFilter): SimpleSQLiteQuery {
         args.add("$it")
     }
     filter.className?.let {
-        request += "${startCommand(request)} ${LogEntityContract.CLASS} LIKE ? "
+        request += "${startCommand(request)} ${LogEntityContract.CLASS} $SQL_LIKE_PREDICATE "
         args.add(it)
     }
     filter.prefix?.let {
-        request += "${startCommand(request)} ${LogEntityContract.PREFIX} LIKE ? "
+        request += "${startCommand(request)} ${LogEntityContract.PREFIX} $SQL_LIKE_PREDICATE "
         args.add(it)
     }
     filter.message?.let {
-        request += "${startCommand(request)} ${LogEntityContract.MESSAGE} LIKE ? "
+        request += "${startCommand(request)} ${LogEntityContract.MESSAGE} $SQL_LIKE_PREDICATE "
         args.add(it)
     }
     filter.sessionId?.let {
-        request += "${startCommand(request)} ${LogEntityContract.SESSION_ID} LIKE ? "
+        request += "${startCommand(request)} ${LogEntityContract.SESSION_ID} $SQL_LIKE_PREDICATE "
         args.add(it)
     }
     request = request.trim()
