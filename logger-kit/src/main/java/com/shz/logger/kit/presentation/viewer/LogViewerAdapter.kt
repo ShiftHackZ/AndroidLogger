@@ -25,7 +25,7 @@ class LogViewerAdapter : ListAdapter<LogEntity, LogViewerAdapter.ViewHolder>(DIF
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: LogEntity) = with(binding) {
-            tvTimestamp.text = "${item.timestamp.formatTimestamp()} // ${item.timestamp}"
+            tvTimestamp.text = item.timestamp.formatTimestamp()
             tvSession.text = item.sessionId
             tvType.text = item.type
             tvClass.text = item.className
