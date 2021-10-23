@@ -35,10 +35,22 @@ fun Long.formatTimestamp(format: String = "dd.MM.yyyy HH:mm:ss"): String {
 fun Pair<Long, Long>.rearrange(): Pair<Long, Long> {
     val (start, end) = this.first to this.second
     return when {
-        start > end -> end to start
-        else -> this
+        start > end -> end.arrangeAsStart() to start.arrangeAsEnd()
+        else -> start.arrangeAsStart() to end.arrangeAsEnd()
     }
 }
+
+fun Long.arrangeAsStart(): Long = Date(this).apply {
+    hours = 0
+    minutes = 0
+    seconds = 0
+}.time
+
+fun Long.arrangeAsEnd(): Long = Date(this).apply {
+    hours = 23
+    minutes = 59
+    seconds = 59
+}.time
 
 fun Pair<Long, Long>.format(): String {
     val (start, end) = this

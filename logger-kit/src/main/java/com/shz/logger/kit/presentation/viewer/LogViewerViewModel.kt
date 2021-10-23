@@ -2,6 +2,7 @@ package com.shz.logger.kit.presentation.viewer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shz.logger.Logger
 import com.shz.logger.LoggerType
 import com.shz.logger.kit.database.entity.LogEntity
 import com.shz.logger.kit.presentation.filter.LogFilter
@@ -52,7 +53,7 @@ class LogViewerViewModel : ViewModel() {
     fun updateFilterTimestampRange(range: Pair<Long, Long>) {
         filter = filter.copy(timestampRange = range.rearrange())
         uiFiltersData.value = filter
-        //getLogs()
+        getLogs()
     }
 
     fun updateFilterLogType(type: LoggerType?) {

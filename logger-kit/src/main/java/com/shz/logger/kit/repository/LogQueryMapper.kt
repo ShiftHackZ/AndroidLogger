@@ -10,6 +10,12 @@ fun mapFilterToQuery(filter: LogFilter): SimpleSQLiteQuery {
     val order = "ORDER BY ${LogEntityContract.TIMESTAMP} DESC"
     var request = "SELECT * FROM ${LogEntityContract.TABLE_NAME} "
     val args = arrayListOf<Any>()
+    filter.timestampRange?.let {
+        request += "${startCommand(request)} ${LogEntityContract.TIMESTAMP} >= ? "
+        args.add("${it.first}")
+        request += "${startCommand(request)} ${LogEntityContract.TIMESTAMP} <= ? "
+        args.add("${it.second}")
+    }
     filter.loggerType?.let {
         request += "${startCommand(request)} ${LogEntityContract.TYPE} = ? "
         args.add("$it")
