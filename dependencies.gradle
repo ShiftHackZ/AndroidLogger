@@ -17,4 +17,8 @@ ext {
             rxjava2: "androidx.room:room-rxjava2:2.2.6",
             compiler: "androidx.room:room-compiler:2.2.6",
     ]
+    shifthackz = [
+            logger: "com.github.ShiftHackZ.AndroidLogger:logger:1.0",
+            logger_kit: "com.github.ShiftHackZ.AndroidLogger:logger-kit:1.0",
+    ]
 }

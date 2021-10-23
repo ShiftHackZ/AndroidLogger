@@ -36,6 +36,7 @@ android {
 
 dependencies {
     api project(':logger-kit')
+//    api shifthackz.logger_kit
     api androidx.core
     api androidx.appcompat
     api androidx.constraintlayout
