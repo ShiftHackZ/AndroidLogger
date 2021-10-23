@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.shz.logger.Logger
 import com.shz.logger.LoggerType
 import com.shz.logger.kit.database.LoggerDatabase
+import com.shz.logger.kit.database.LoggerDatabaseProvider
 import com.shz.logger.kit.middleware.DatabaseLoggerMiddleware
 import com.shz.logger.kit.presentation.viewer.LogViewerActivity
 import com.shz.logger.middleware.LoggerMiddleware
@@ -26,7 +27,6 @@ import java.util.*
 object LoggerKit {
 
     private lateinit var application: Application
-    private lateinit var database: LoggerDatabase
     private lateinit var databaseMiddleware: DatabaseLoggerMiddleware
 
     /**
@@ -35,15 +35,11 @@ object LoggerKit {
      * @param app instance of your [Application] member declared in AndroidManifest.
      */
     fun initialize(app: Application): LoggerKit {
+        LoggerDatabaseProvider.init(app)
         Config.sessionId = UUID.randomUUID().toString()
         application = app
-        database = Room
-            .databaseBuilder(app, LoggerDatabase::class.java, Config.DB_NAME)
-            .fallbackToDestructiveMigration()
-            .build()
-
         databaseMiddleware = DatabaseLoggerMiddleware(
-            database.logDao(),
+            LoggerDatabaseProvider.provide().logDao(),
             Config.sessionId
         )
 
@@ -57,8 +53,6 @@ object LoggerKit {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
     }
-
-    fun getDatabase(): LoggerDatabase = database
 
     /**
      * Member of [LoggerKit], [Logger].
