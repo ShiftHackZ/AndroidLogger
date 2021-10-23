@@ -17,6 +17,7 @@ class LogViewerViewModel : ViewModel() {
     val share = LoggerLiveEvent<List<LogEntity>>()
     val entryCount = LoggerLiveEvent<Int>()
 
+    val uiSettingsVisibility = LoggerLiveEvent<Boolean>()
     val uiFiltersVisibility = LoggerLiveEvent<Boolean>()
     val uiFiltersData = LoggerLiveEvent<LogFilter>()
     val uiFiltersClear = LoggerLiveEvent<Unit>()
@@ -25,6 +26,7 @@ class LogViewerViewModel : ViewModel() {
     private var filter: LogFilter = LogFilter()
 
     init {
+        uiSettingsVisibility.value = false
         uiFiltersVisibility.value = false
         uiFiltersData.value = filter
     }
@@ -46,8 +48,20 @@ class LogViewerViewModel : ViewModel() {
         }
     }
 
+    fun clearLoggerDatabase() {
+        viewModelScope.launch {
+            repository.clearDatabase()
+            logs.value = arrayListOf()
+            entryCount.value = 0
+        }
+    }
+
     fun onFiltersClick() {
         uiFiltersVisibility.value?.let { uiFiltersVisibility.value = !it }
+    }
+
+    fun onSettingsClick() {
+        uiSettingsVisibility.value?.let { uiSettingsVisibility.value = !it }
     }
 
     fun updateFilterTimestampRange(range: Pair<Long, Long>) {
@@ -92,5 +106,4 @@ class LogViewerViewModel : ViewModel() {
         uiFiltersClear.value = Unit
         getLogs()
     }
-
 }

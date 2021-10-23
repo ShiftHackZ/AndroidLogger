@@ -8,6 +8,7 @@
     <string name="logger_kit_filter_placeholder_message">Enter log message</string>
     <string name="logger_kit_filter_placeholder_session_id">Enter session id</string>
     <string name="logger_kit_filter_action_clear">Clear filters</string>
+    <string name="logger_kit_settings_action_database_clear">Clear Database</string>
 
     <string-array name="logger_kit_entry_type">
         <item>LogType: All</item>

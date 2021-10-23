@@ -29,6 +29,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         binding.rvLogs.adapter = logViewerAdapter
         viewModel = ViewModelProvider(this).get(LogViewerViewModel::class.java)
         setupFiltersUi()
+        setupSettingsUi()
         setupViewModel()
         viewModel.getLogs()
     }
@@ -53,6 +54,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             binding.filters.btnTimestampRange.text = it.timestampRange?.format()
                 ?: getString(R.string.logger_kit_filter_placeholder_timestamp_range)
         }
+        viewModel.uiSettingsVisibility.observe(this, binding.settings.root::showcase)
     }
 
     private fun setupFiltersUi() {
@@ -82,6 +84,15 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         binding.filters.etTag.onChanged(viewModel::updateFilterTag)
         binding.filters.etMessage.onChanged(viewModel::updateFilterMessage)
         binding.filters.etSessionId.onChanged(viewModel::updateFilterSessionId)
+    }
+
+    private fun setupSettingsUi() {
+        binding.btnSettings.setOnClickListener {
+            viewModel.onSettingsClick()
+        }
+        binding.settings.btnDatabaseClear.setOnClickListener {
+            viewModel.clearLoggerDatabase()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

@@ -10,4 +10,8 @@ class LogLocalRepository {
     suspend fun queryLogs(filter: LogFilter) = withContext(Dispatchers.IO) {
         LoggerDatabaseProvider.provide().logDao().query(mapFilterToQuery(filter))
     }
+
+    suspend fun clearDatabase() = withContext(Dispatchers.IO) {
+        LoggerDatabaseProvider.provide().logDao().clear()
+    }
 }
