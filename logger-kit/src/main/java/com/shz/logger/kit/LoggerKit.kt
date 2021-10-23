@@ -43,9 +43,10 @@ object LoggerKit {
      *
      * @param app instance of your [Application] member declared in AndroidManifest.
      */
+    @JvmStatic
     fun initialize(app: Application): LoggerKit {
+        generateSessionId()
         LoggerDatabaseProvider.init(app)
-        Config.sessionId = UUID.randomUUID().toString()
         application = app
         databaseMiddleware = DatabaseLoggerMiddleware(
             LoggerDatabaseProvider.provide().logDao(),
@@ -55,14 +56,38 @@ object LoggerKit {
     }
 
     /**
+     * Allows to define if [LoggerKit] should print it's own debug information to logs.
+     * Note, [LoggerKit] debug messages does not processed by any of [LoggerMiddleware].
+     */
+    @JvmStatic
+    fun setDebugMode(debug: Boolean): LoggerKit {
+        Debugger.printDebug = debug
+        Debugger.print("Mode", "Debug mode state changed to: $debug")
+        return this
+    }
+
+    /**
+     * Generates new session-id parameter, which indicates as runtime identifier of log entry.
+     * Called automatically during [LoggerKit] initialization, only needs to be called if necessary.
+     */
+    @JvmStatic
+    fun generateSessionId(): LoggerKit {
+        Config.sessionId = UUID.randomUUID().toString()
+        Debugger.print("Session", "Generated session-id: ${Config.sessionId}")
+        return this
+    }
+
+    /**
      * Opens screen with formatted list of previously collected logs.
      * Allows user to view, search, filter and export logs in runtime.
      */
+    @JvmStatic
     fun openLogViewer() = handle {
+        Debugger.print("UI", "Requested to open LoggerKit viewer")
         application.startActivity(
             Intent(application, LogViewerActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        })
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
     }
 
     /**
@@ -74,8 +99,10 @@ object LoggerKit {
      * @see LoggerMiddleware
      * @param middleware instance of corresponding [LoggerMiddleware].
      */
+    @JvmStatic
     fun addMiddleware(middleware: LoggerMiddleware): LoggerKit {
         Logger.addMiddleware(middleware)
+        Debugger.print("MIDDLEWARE", "Adding new middleware: $middleware")
         return this
     }
 
@@ -88,8 +115,10 @@ object LoggerKit {
      * @see LoggerMiddleware
      * @param middlewares collection of corresponding [LoggerMiddleware] objects.
      */
+    @JvmStatic
     fun addMiddlewares(vararg middlewares: LoggerMiddleware): LoggerKit {
-        middlewares.forEach(Logger::addMiddleware)
+        Debugger.print("MIDDLEWARE", "Adding ${middlewares.size} new middlewares")
+        middlewares.forEach(LoggerKit::addMiddleware)
         return this
     }
 
@@ -102,7 +131,9 @@ object LoggerKit {
      * @see LoggerMiddleware
      * @param middleware instance that needs to be released from middlewares processor.
      */
+    @JvmStatic
     fun removeMiddleware(middleware: LoggerMiddleware): LoggerKit {
+        Debugger.print("MIDDLEWARE", "Removing middleware $middleware")
         Logger.removeMiddleware(middleware)
         return this
     }
@@ -115,7 +146,9 @@ object LoggerKit {
      * @see Logger
      * @see LoggerMiddleware
      */
+    @JvmStatic
     fun clearAllMiddlewares(): LoggerKit {
+        Debugger.print("MIDDLEWARE", "Removing all previous middlewares")
         Logger.clearAllMiddlewares()
         return this
     }
@@ -140,5 +173,19 @@ object LoggerKit {
          * Allows to perform log entries filtering by single application runtime session.
          */
         var sessionId: String = ""
+
+    }
+
+    object Debugger {
+
+        /**
+         * Flags that defines if [LoggerKit] should print it's own debug information to logs.
+         * Note, [LoggerKit] debug messages does not processed by any of [LoggerMiddleware].
+         */
+        var printDebug: Boolean = false
+
+        fun print(prefix: String, message: String, e: Throwable? = null) {
+            if (printDebug) Logger.print(LoggerType.INFO, LoggerKit::class, prefix, message, e)
+        }
     }
 }

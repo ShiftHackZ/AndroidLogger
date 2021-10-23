@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import com.shz.logger.Logger
+import com.shz.logger.LoggerType
+import com.shz.logger.kit.LoggerKit
 import com.shz.logger.kit.R
 import com.shz.logger.kit.base.BaseLoggerKitActivity
 import com.shz.logger.kit.databinding.ActivityLogViewerBinding
@@ -32,19 +35,26 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         setupSettingsUi()
         setupViewModel()
         viewModel.getLogs()
+        LoggerKit.Debugger.print("UI", "LoggerKit viewer started")
     }
 
     private fun setupViewModel() {
         viewModel.logs.observeNotNull(this, logViewerAdapter::submitList)
         viewModel.share.observeNotNull(this) {
+            LoggerKit.Debugger.print("SHARE", "Trying to share ${it.size} entries")
             LoggerShareUtility.shareAsFile(this, it)
         }
         viewModel.entryCount.observeNotNull(this) {
+            LoggerKit.Debugger.print("UI", "Entry count changed: $it")
             binding.emptyState.root.showcase(it == 0)
             binding.tvStatus.text = getString(R.string.logger_kit_format_entry_count, "$it")
         }
-        viewModel.uiFiltersVisibility.observeNotNull(this, binding.filters.root::showcase)
+        viewModel.uiFiltersVisibility.observeNotNull(this) {
+            LoggerKit.Debugger.print("UI", "Filters visibility changed state: $it")
+            binding.filters.root.showcase(it)
+        }
         viewModel.uiFiltersClear.observeNotNull(this) {
+            LoggerKit.Debugger.print("UI", "Clearing all filters")
             binding.filters.etClass.clear()
             binding.filters.etTag.clear()
             binding.filters.etMessage.clear()
@@ -55,7 +65,10 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             binding.filters.btnTimestampRange.text = it.timestampRange?.format()
                 ?: getString(R.string.logger_kit_filter_placeholder_timestamp_range)
         }
-        viewModel.uiSettingsVisibility.observe(this, binding.settings.root::showcase)
+        viewModel.uiSettingsVisibility.observe(this) {
+            LoggerKit.Debugger.print("UI", "Settings visibility changed state: $it")
+            binding.settings.root.showcase(it)
+        }
     }
 
     private fun setupFiltersUi() {
@@ -99,8 +112,11 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun showTimestampDatePickers() {
         hideKeyboard()
+        LoggerKit.Debugger.print("UI", "Started filter date picker")
         showDatePicker { start ->
+            LoggerKit.Debugger.print("UI", "Range #1: ${start.time}")
             showDatePicker { end ->
+                LoggerKit.Debugger.print("UI", "Range #2: ${end.time}")
                 viewModel.updateFilterTimestampRange(start.time to end.time)
             }
         }

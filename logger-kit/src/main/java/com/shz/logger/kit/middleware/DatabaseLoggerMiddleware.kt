@@ -1,6 +1,7 @@
 package com.shz.logger.kit.middleware
 
 import android.util.Log
+import com.shz.logger.Logger
 import com.shz.logger.LoggerType
 import com.shz.logger.TAG
 import com.shz.logger.kit.LoggerKit
@@ -30,18 +31,18 @@ class DatabaseLoggerMiddleware(private val dao: LogDao) : LoggerMiddleware {
     ) {
         if (tag == this::class.TAG) return
         executorService.execute {
-            dao.insert(
-                LogEntity(
-                    id = 0L,
-                    sessionId = LoggerKit.Config.sessionId,
-                    timestamp = System.currentTimeMillis(),
-                    type = loggerType.toString(),
-                    className = tag,
-                    prefix = prefix ?: "",
-                    message = content,
-                    stacktrace = Log.getStackTraceString(throwable)
-                )
+            val entry = LogEntity(
+                id = 0L,
+                sessionId = LoggerKit.Config.sessionId,
+                timestamp = System.currentTimeMillis(),
+                type = loggerType.toString(),
+                className = tag,
+                prefix = prefix ?: "",
+                message = content,
+                stacktrace = Log.getStackTraceString(throwable)
             )
+            LoggerKit.Debugger.print("MIDDLEWARE", "Inserting log: $entry")
+            dao.insert(entry)
         }
     }
 

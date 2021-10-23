@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shz.logger.Logger
 import com.shz.logger.LoggerType
+import com.shz.logger.kit.LoggerKit
 import com.shz.logger.kit.database.entity.LogEntity
 import com.shz.logger.kit.presentation.filter.LogFilter
 import com.shz.logger.kit.repository.LogLocalRepository
@@ -30,6 +31,7 @@ class LogViewerViewModel : ViewModel() {
         uiFiltersVisibility.value = false
         uiFiltersData.value = filter
         entryCount.value = 0
+        LoggerKit.Debugger.print("UI", "ViewModel initialization successful")
     }
 
     fun getLogs() {

@@ -15,6 +15,9 @@ import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.shz.logger.Logger
+import com.shz.logger.LoggerType
+import com.shz.logger.kit.LoggerKit
 import com.shz.logger.kit.presentation.filter.mapPositionToLogType
 import com.shz.logger.kit.presentation.viewer.LogViewerActivity
 import java.text.SimpleDateFormat
@@ -60,6 +63,7 @@ fun Pair<Long, Long>.format(): String {
 }
 
 fun Activity.hideKeyboard() {
+    LoggerKit.Debugger.print("UI", "Trying to hide keyboard")
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
     imm?.hideSoftInputFromWindow(window.decorView.rootView.windowToken, 0)
 }
@@ -110,6 +114,6 @@ fun handle(action: () -> Unit) {
     try {
         action()
     } catch (e: Exception) {
-        //No-op
+        LoggerKit.Debugger.print("Error", e.message.toString(), e)
     }
 }
