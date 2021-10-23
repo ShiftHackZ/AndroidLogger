@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/colorLoggerKitBackground"
+    tools:ignore="ContentDescription">
+
+    <View
+        android:id="@+id/toolbarPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/toolbarDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLoggerKitDivider"
+        app:layout_constraintTop_toBottomOf="@id/toolbarPlaceholder" />
+
+    <TextView
+        android:id="@+id/tvViewerTitle"
+        style="@style/LoggerKit.HeadingTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/logger_kit_viewer_title"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarPlaceholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbarPlaceholder" />
+
+    <ImageView
+        android:id="@+id/ivFilterIndicator"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:src="@android:drawable/ic_notification_overlay"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/btnFilter"
+        app:layout_constraintTop_toTopOf="@+id/btnFilter"
+        app:tint="@color/colorLoggerKitStacktrace"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/btnFilter"
+        style="@style/LoggerKit.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_log_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarPlaceholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbarPlaceholder" />
+
+    <ImageButton
+        android:id="@+id/btnShare"
+        style="@style/LoggerKit.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_log_share"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarPlaceholder"
+        app:layout_constraintEnd_toStartOf="@+id/btnFilter"
+        app:layout_constraintTop_toTopOf="@+id/toolbarPlaceholder" />
+
+    <ImageButton
+        android:id="@+id/btnSettings"
+        style="@style/LoggerKit.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_log_settings"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarPlaceholder"
+        app:layout_constraintEnd_toStartOf="@+id/btnShare"
+        app:layout_constraintTop_toTopOf="@+id/toolbarPlaceholder" />
+
+    <include
+        android:id="@+id/filters"
+        layout="@layout/layout_log_viewer_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbarDivider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLogs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/tvStatus"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
+        tools:listitem="@layout/item_log" />
+
+    <View
+        android:id="@+id/statusDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLoggerKitDivider"
+        app:layout_constraintBottom_toTopOf="@id/tvStatus" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        style="@style/LoggerKit.ItemTextAppearance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="@string/logger_kit_format_entry_count" />
+
+    <include
+        android:id="@+id/emptyState"
+        layout="@layout/layout_log_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/statusDivider"
+        app:layout_constraintTop_toBottomOf="@+id/filters" />
+
+    <include
+        android:id="@+id/settings"
+        layout="@layout/layout_log_settings"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/statusDivider"
+        app:layout_constraintTop_toBottomOf="@id/toolbarDivider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

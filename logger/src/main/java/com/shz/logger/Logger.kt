@@ -16,6 +16,11 @@ import kotlin.reflect.KClass
 object Logger {
 
     /**
+     * LoggerKit library version
+     */
+    const val VERSION = "1.0"
+
+    /**
      * Collection of [LoggerMiddleware] that is used for log pre/post processing.
      */
     private val middlewares: ArrayList<LoggerMiddleware> = arrayListOf()
@@ -32,8 +37,22 @@ object Logger {
      * @see LoggerPrinter
      * @param printer instance of [LoggerPrinter] to use for output.
      */
+    @JvmStatic
     fun setPrinter(printer: LoggerPrinter): Logger {
         Logger.printer = printer
+        return this
+    }
+
+    /**
+     * Member of [Logger].
+     * Allows to add [LoggerMiddleware] instances.
+     *
+     * @see LoggerMiddleware
+     * @param middleware instance of corresponding [LoggerMiddleware].
+     */
+    @JvmStatic
+    fun addMiddleware(middleware: LoggerMiddleware): Logger {
+        middlewares.add(middleware)
         return this
     }
 
@@ -44,7 +63,8 @@ object Logger {
      * @see LoggerMiddleware
      * @param middlewares collection of corresponding [LoggerMiddleware] objects.
      */
-    fun addMiddleware(vararg middlewares: LoggerMiddleware): Logger {
+    @JvmStatic
+    fun addMiddlewares(vararg middlewares: LoggerMiddleware): Logger {
         Logger.middlewares.addAll(middlewares)
         return this
     }
@@ -56,8 +76,9 @@ object Logger {
      * @see LoggerMiddleware
      * @param middleware instance that needs to be released from middlewares processor.
      */
+    @JvmStatic
     fun removeMiddleware(middleware: LoggerMiddleware): Logger {
-        middlewares.remove(middleware)
+        if (!middleware.isWhitelisted) middlewares.remove(middleware)
         return this
     }
 
@@ -67,10 +88,28 @@ object Logger {
      *
      * @see LoggerMiddleware
      */
+    @JvmStatic
     fun clearAllMiddlewares(): Logger {
-        middlewares.clear()
+        val nonKitMiddleware = middlewares.filter { it.isWhitelisted }
+        middlewares.removeAll(nonKitMiddleware)
         return this
     }
+
+    /**
+     * Returns list of active [LoggerMiddleware] names.
+     *
+     * @return collection of string names.
+     */
+    @JvmStatic
+    fun getMiddlewaresNames(): List<String> = middlewares.map { it::class.TAG }
+
+    /**
+     * Returns count of active instances of [LoggerMiddleware].
+     *
+     * @return integer count of middlewares.
+     */
+    @JvmStatic
+    fun getMiddlewaresCount(): Int = middlewares.size
 
     /**
      * Member of [Logger].
@@ -79,6 +118,7 @@ object Logger {
      * @param clazz caller java class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun v(clazz: Class<*>, message: Any?) {
         onLogReceived(LoggerType.VERBOSE, clazz.TAG, message.toString(), null, null)
         printer.log(LoggerType.VERBOSE, clazz.TAG, message.toString(), null, null)
@@ -93,6 +133,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun v(clazz: Class<*>, prefix: String, message: Any?) {
         onLogReceived(LoggerType.VERBOSE, clazz.TAG, message.toString(), prefix, null)
         printer.log(LoggerType.VERBOSE, clazz.TAG, message.toString(), prefix, null)
@@ -107,6 +148,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun v(clazz: Class<*>, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.VERBOSE, clazz.TAG, message.toString(), null, t)
         printer.log(LoggerType.VERBOSE, clazz.TAG, message.toString(), null, t)
@@ -122,6 +164,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun v(clazz: Class<*>, prefix: String, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.VERBOSE, clazz.TAG, message.toString(), prefix, t)
         printer.log(LoggerType.VERBOSE, clazz.TAG, message.toString(), prefix, t)
@@ -135,6 +178,7 @@ object Logger {
      * @param clazz caller kotlin class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun v(clazz: KClass<*>, message: Any?) {
         v(clazz.java, message)
     }
@@ -147,6 +191,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun v(clazz: KClass<*>, prefix: String, message: Any?) {
         v(clazz.java, prefix, message)
     }
@@ -159,6 +204,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun v(clazz: KClass<*>, message: Any?, t: Throwable?) {
         v(clazz.java, message, t)
     }
@@ -172,6 +218,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun v(clazz: KClass<*>, prefix: String, message: Any?, t: Throwable?) {
         v(clazz.java, prefix, message, t)
     }
@@ -183,6 +230,7 @@ object Logger {
      * @param clazz caller java class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun d(clazz: Class<*>, message: Any?) {
         onLogReceived(LoggerType.DEBUG, clazz.TAG, message.toString(), null, null)
         printer.log(LoggerType.DEBUG, clazz.TAG, message.toString(), null, null)
@@ -197,6 +245,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun d(clazz: Class<*>, prefix: String, message: Any?) {
         onLogReceived(LoggerType.DEBUG, clazz.TAG, message.toString(), prefix, null)
         printer.log(LoggerType.DEBUG, clazz.TAG, message.toString(), prefix, null)
@@ -211,6 +260,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun d(clazz: Class<*>, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.DEBUG, clazz.TAG, message.toString(), null, t)
         printer.log(LoggerType.DEBUG, clazz.TAG, message.toString(), null, t)
@@ -226,6 +276,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun d(clazz: Class<*>, prefix: String, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.DEBUG, clazz.TAG, message.toString(), prefix, t)
         printer.log(LoggerType.DEBUG, clazz.TAG, message.toString(), prefix, t)
@@ -239,6 +290,7 @@ object Logger {
      * @param clazz caller kotlin class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun d(clazz: KClass<*>, message: Any?) {
         d(clazz.java, message)
     }
@@ -251,6 +303,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun d(clazz: KClass<*>, prefix: String, message: Any?) {
         d(clazz.java, prefix, message)
     }
@@ -263,6 +316,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun d(clazz: KClass<*>, message: Any?, t: Throwable?) {
         d(clazz.java, message, t)
     }
@@ -276,6 +330,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun d(clazz: KClass<*>, prefix: String, message: Any?, t: Throwable?) {
         d(clazz.java, prefix, message, t)
     }
@@ -287,6 +342,7 @@ object Logger {
      * @param clazz caller java class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun i(clazz: Class<*>, message: Any?) {
         onLogReceived(LoggerType.INFO, clazz.TAG, message.toString(), null, null)
         printer.log(LoggerType.INFO, clazz.TAG, message.toString(), null, null)
@@ -301,6 +357,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun i(clazz: Class<*>, prefix: String, message: Any?) {
         onLogReceived(LoggerType.INFO, clazz.TAG, message.toString(), prefix, null)
         printer.log(LoggerType.INFO, clazz.TAG, message.toString(), prefix, null)
@@ -315,6 +372,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun i(clazz: Class<*>, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.INFO, clazz.TAG, message.toString(), null, t)
         printer.log(LoggerType.INFO, clazz.TAG, message.toString(), null, t)
@@ -330,6 +388,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun i(clazz: Class<*>, prefix: String, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.INFO, clazz.TAG, message.toString(), prefix, t)
         printer.log(LoggerType.INFO, clazz.TAG, message.toString(), prefix, t)
@@ -343,6 +402,7 @@ object Logger {
      * @param clazz caller kotlin class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun i(clazz: KClass<*>, message: Any?) {
         i(clazz.java, message)
     }
@@ -355,6 +415,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun i(clazz: KClass<*>, prefix: String, message: Any?) {
         i(clazz.java, prefix, message)
     }
@@ -367,6 +428,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun i(clazz: KClass<*>, message: Any?, t: Throwable?) {
         i(clazz.java, message, t)
     }
@@ -380,6 +442,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun i(clazz: KClass<*>, prefix: String, message: Any?, t: Throwable?) {
         i(clazz.java, prefix, message, t)
     }
@@ -391,6 +454,7 @@ object Logger {
      * @param clazz caller java class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun w(clazz: Class<*>, message: Any?) {
         onLogReceived(LoggerType.WARNING, clazz.TAG, message.toString(), null, null)
         printer.log(LoggerType.WARNING, clazz.TAG, message.toString(), null, null)
@@ -405,6 +469,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun w(clazz: Class<*>, prefix: String, message: Any?) {
         onLogReceived(LoggerType.WARNING, clazz.TAG, message.toString(), prefix, null)
         printer.log(LoggerType.WARNING, clazz.TAG, message.toString(), prefix, null)
@@ -419,6 +484,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun w(clazz: Class<*>, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.WARNING, clazz.TAG, message.toString(), null, t)
         printer.log(LoggerType.WARNING, clazz.TAG, message.toString(), null, t)
@@ -434,6 +500,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun w(clazz: Class<*>, prefix: String, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.WARNING, clazz.TAG, message.toString(), prefix, t)
         printer.log(LoggerType.WARNING, clazz.TAG, message.toString(), prefix, t)
@@ -447,6 +514,7 @@ object Logger {
      * @param clazz caller kotlin class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun w(clazz: KClass<*>, message: Any?) {
         w(clazz.java, message)
     }
@@ -459,6 +527,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun w(clazz: KClass<*>, prefix: String, message: Any?) {
         w(clazz.java, prefix, message)
     }
@@ -471,6 +540,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun w(clazz: KClass<*>, message: Any?, t: Throwable?) {
         w(clazz.java, message, t)
     }
@@ -484,6 +554,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun w(clazz: KClass<*>, prefix: String, message: Any?, t: Throwable?) {
         w(clazz.java, prefix, message, t)
     }
@@ -495,6 +566,7 @@ object Logger {
      * @param clazz caller java class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun e(clazz: Class<*>, message: Any?) {
         onLogReceived(LoggerType.EXCEPTION, clazz.TAG, message.toString(), null, null)
         printer.log(LoggerType.EXCEPTION, clazz.TAG, message.toString(), null, null)
@@ -509,6 +581,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun e(clazz: Class<*>, prefix: String, message: Any?) {
         onLogReceived(LoggerType.EXCEPTION, clazz.TAG, message.toString(), prefix, null)
         printer.log(LoggerType.EXCEPTION, clazz.TAG, message.toString(), prefix, null)
@@ -523,6 +596,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun e(clazz: Class<*>, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.EXCEPTION, clazz.TAG, message.toString(), null, t)
         printer.log(LoggerType.EXCEPTION, clazz.TAG, message.toString(), null, t)
@@ -538,6 +612,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun e(clazz: Class<*>, prefix: String, message: Any?, t: Throwable?) {
         onLogReceived(LoggerType.EXCEPTION, clazz.TAG, message.toString(), prefix, t)
         printer.log(LoggerType.EXCEPTION, clazz.TAG, message.toString(), prefix, t)
@@ -551,6 +626,7 @@ object Logger {
      * @param clazz caller kotlin class instance;
      * @param message message to print.
      */
+    @JvmStatic
     fun e(clazz: KClass<*>, message: Any?) {
         e(clazz.java, message)
     }
@@ -563,6 +639,7 @@ object Logger {
      * @param prefix tag that can be used for filtering or grouping logs;
      * @param message message to print.
      */
+    @JvmStatic
     fun e(clazz: KClass<*>, prefix: String, message: Any?) {
         e(clazz.java, prefix, message)
     }
@@ -575,6 +652,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun e(clazz: KClass<*>, message: Any?, t: Throwable?) {
         e(clazz.java, message, t)
     }
@@ -588,6 +666,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun e(clazz: KClass<*>, prefix: String, message: Any?, t: Throwable?) {
         e(clazz.java, prefix, message, t)
     }
@@ -604,6 +683,7 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun log(type: LoggerType, clazz: Class<*>, prefix: String?, message: Any?, t: Throwable) {
         onLogReceived(type, clazz.TAG, message.toString(), prefix, t)
         printer.log(type, clazz.TAG, message.toString(), prefix, t)
@@ -622,8 +702,43 @@ object Logger {
      * @param message message to print;
      * @param t exception, represented as instance of [Throwable].
      */
+    @JvmStatic
     fun log(type: LoggerType, clazz: KClass<*>, prefix: String?, message: Any?, t: Throwable) {
         log(type, clazz.java, prefix, message.toString(), t)
+    }
+
+    /**
+     * Member of [Logger].
+     * Prints log message and does not use any middleware and log processing.
+     *
+     * @see LoggerType
+     *
+     * @param type type of log message;
+     * @param clazz caller java class instance;
+     * @param prefix tag that can be used for filtering or grouping logs;
+     * @param message message to print;
+     * @param t exception, represented as instance of [Throwable].
+     */
+    @JvmStatic
+    fun print(type: LoggerType, clazz: Class<*>, prefix: String?, message: Any?, t: Throwable? = null) {
+        printer.log(type, clazz.TAG, message.toString(), prefix, t)
+    }
+
+    /**
+     * Member of [Logger].
+     * Prints log message and does not use any middleware and log processing.
+     *
+     * @see LoggerType
+     *
+     * @param type type of log message;
+     * @param clazz caller kotlin class instance;
+     * @param prefix tag that can be used for filtering or grouping logs;
+     * @param message message to print;
+     * @param t exception, represented as instance of [Throwable].
+     */
+    @JvmStatic
+    fun print(type: LoggerType, clazz: KClass<*>, prefix: String?, message: Any?, t: Throwable? = null) {
+        print(type, clazz.java, prefix, message, t)
     }
 
     /**

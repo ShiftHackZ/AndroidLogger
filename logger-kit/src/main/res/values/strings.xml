@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logger_kit_viewer_title">LoggerKit</string>
+    <string name="logger_kit_format_entry_count">Total: %1$s log entries</string>
+    <string name="logger_kit_format_middleware_count">Active middlewares: %1$s instances</string>
+    <string name="logger_kit_format_logger_version">Logger version: %1$s</string>
+    <string name="logger_kit_format_logger_kit_version">LoggerKit version: %1$s</string>
+    <string name="logger_kit_format_logger_debug_mode">Debug Mode: %1$s</string>
+    <string name="logger_kit_format_logger_session_id">Session ID: %1$s</string>
+    <string name="logger_kit_filter_placeholder_timestamp_range">Select date range</string>
+    <string name="logger_kit_filter_placeholder_class">Enter class name</string>
+    <string name="logger_kit_filter_placeholder_tag">Enter tag</string>
+    <string name="logger_kit_filter_placeholder_message">Enter log message</string>
+    <string name="logger_kit_filter_placeholder_session_id">Enter session id</string>
+    <string name="logger_kit_filter_action_clear">Clear filters</string>
+    <string name="logger_kit_state_empty_title">There is nothing here</string>
+    <string name="logger_kit_state_empty_sub_title">Try to change filters, or just log something ;)</string>
+    <string name="logger_kit_settings_action_database_clear">Clear Database</string>
+    <string name="logger_kit_settings_action_debug_mode_enable">Enable debug mode</string>
+    <string name="logger_kit_settings_action_debug_mode_disable">Disable debug mode</string>
+    <string name="logger_kit_settings_action_generate_session_id">Generate new session-id</string>
+    <string name="logger_kit_settings_header_stats">Statistics</string>
+    <string name="logger_kit_settings_header_actions">Actions</string>
+    <string name="logger_kit_settings_header_credits">Credits</string>
+
+    <string-array name="logger_kit_entry_type">
+        <item>LogType: All</item>
+        <item>VERBOSE</item>
+        <item>DEBUG</item>
+        <item>INFO</item>
+        <item>WARNING</item>
+        <item>EXCEPTION</item>
+    </string-array>
+</resources>

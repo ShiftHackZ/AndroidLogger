@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
+
+    <TextView
+        android:id="@+id/btnTimestampRange"
+        style="@style/LoggerKit.ItemTextAppearance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:text="@string/logger_kit_filter_placeholder_timestamp_range"
+        app:drawableLeftCompat="@drawable/ic_log_item_date"
+        app:drawableStartCompat="@drawable/ic_log_item_date"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:drawableStart="@drawable/ic_log_item_date" />
+
+    <Spinner
+        android:id="@+id/spinnerLogType"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnTimestampRange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etClass"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:hint="@string/logger_kit_filter_placeholder_class"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTimestampRange" />
+
+    <EditText
+        android:id="@+id/etTag"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:hint="@string/logger_kit_filter_placeholder_tag"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintTop_toBottomOf="@+id/btnTimestampRange" />
+
+    <EditText
+        android:id="@+id/etMessage"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:hint="@string/logger_kit_filter_placeholder_message"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTag" />
+
+    <EditText
+        android:id="@+id/etSessionId"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:hint="@string/logger_kit_filter_placeholder_session_id"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintTop_toBottomOf="@+id/etTag" />
+
+    <Button
+        android:id="@+id/btnClear"
+        style="@style/LoggerKit.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:text="@string/logger_kit_filter_action_clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSessionId" />
+
+    <View
+        android:id="@+id/bottomDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/colorLoggerKitDivider"
+        app:layout_constraintTop_toBottomOf="@+id/btnClear" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

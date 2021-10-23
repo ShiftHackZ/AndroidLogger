@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'maven-publish'
 }
 
@@ -9,12 +10,11 @@ apply from: '../dependencies.gradle'
 android {
     compileSdk 31
     defaultConfig {
-        minSdk 16
+        minSdk 21
         targetSdk 31
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
     buildTypes {
@@ -22,6 +22,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        viewBinding true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -38,9 +41,20 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = "com.shifthackz.logger"
-                artifactId = "logger"
+                artifactId = "logger-kit"
                 version = "1.0"
             }
         }
     }
+}
+
+dependencies {
+    api project(':logger')
+    api kotlin.coroutines
+    api androidx.appcompat
+    api androidx.constraintlayout
+    api androidx.recyclerview
+    api androidx.lifecycle
+    api room.runtime
+    kapt room.compiler
 }
