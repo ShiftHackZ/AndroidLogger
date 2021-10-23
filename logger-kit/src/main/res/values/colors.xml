@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorLoggerKitBackground">#ffffff</color>
+    <color name="colorLoggerKitButtonBackground">#252525</color>
+    <color name="colorLoggerKitButtonForeground">#E1DCDC</color>
     <color name="colorLoggerKitText">#000000</color>
+    <color name="colorLoggerKitHint">#4E4E4E</color>
     <color name="colorLoggerKitStacktrace">#ED3737</color>
     <color name="colorLoggerKitDivider">#80000000</color>
 </resources>

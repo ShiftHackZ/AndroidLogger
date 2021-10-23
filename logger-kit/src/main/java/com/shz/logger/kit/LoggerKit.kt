@@ -28,6 +28,11 @@ import java.util.*
 object LoggerKit {
 
     /**
+     * LoggerKit library version
+     */
+    const val VERSION = "1.0"
+
+    /**
      * Pointer to current [Application] instance.
      */
     private lateinit var application: Application

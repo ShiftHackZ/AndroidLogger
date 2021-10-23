@@ -16,6 +16,11 @@ import kotlin.reflect.KClass
 object Logger {
 
     /**
+     * LoggerKit library version
+     */
+    const val VERSION = "1.0"
+
+    /**
      * Collection of [LoggerMiddleware] that is used for log pre/post processing.
      */
     private val middlewares: ArrayList<LoggerMiddleware> = arrayListOf()
@@ -89,6 +94,22 @@ object Logger {
         middlewares.removeAll(nonKitMiddleware)
         return this
     }
+
+    /**
+     * Returns list of active [LoggerMiddleware] names.
+     *
+     * @return collection of string names.
+     */
+    @JvmStatic
+    fun getMiddlewaresNames(): List<String> = middlewares.map { it::class.TAG }
+
+    /**
+     * Returns count of active instances of [LoggerMiddleware].
+     *
+     * @return integer count of middlewares.
+     */
+    @JvmStatic
+    fun getMiddlewaresCount(): Int = middlewares.size
 
     /**
      * Member of [Logger].

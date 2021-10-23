@@ -1,10 +1,15 @@
 package com.shz.logger.kit.presentation.viewer
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.shz.logger.Logger
 import com.shz.logger.LoggerType
@@ -28,6 +33,14 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window?.statusBarColor = ContextCompat.getColor(this, R.color.colorLoggerKitBackground)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            WindowInsetsControllerCompat(window, window.decorView).apply {
+                isAppearanceLightStatusBars = true
+            }
+        } else {
+            window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
         supportActionBar?.hide()
         binding.rvLogs.adapter = logViewerAdapter
         viewModel = ViewModelProvider(this).get(LogViewerViewModel::class.java)
@@ -38,6 +51,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         LoggerKit.Debugger.print("UI", "LoggerKit viewer started")
     }
 
+    @SuppressLint("StringFormatMatches")
     private fun setupViewModel() {
         viewModel.logs.observeNotNull(this, logViewerAdapter::submitList)
         viewModel.share.observeNotNull(this) {
@@ -55,6 +69,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         }
         viewModel.uiFiltersClear.observeNotNull(this) {
             LoggerKit.Debugger.print("UI", "Clearing all filters")
+            binding.filters.spinnerLogType.setSelection(0)
             binding.filters.etClass.clear()
             binding.filters.etTag.clear()
             binding.filters.etMessage.clear()
@@ -65,9 +80,31 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             binding.filters.btnTimestampRange.text = it.timestampRange?.format()
                 ?: getString(R.string.logger_kit_filter_placeholder_timestamp_range)
         }
-        viewModel.uiSettingsVisibility.observe(this) {
+        viewModel.uiSettingsVisibility.observeNotNull(this) {
             LoggerKit.Debugger.print("UI", "Settings visibility changed state: $it")
             binding.settings.root.showcase(it)
+        }
+        viewModel.uiSettingsStats.observeNotNull(this) {
+            binding.settings.tvMiddlewareCount.text = getString(
+                R.string.logger_kit_format_middleware_count,
+                it.middlewareCount
+            )
+            binding.settings.tvMiddlewareList.text = it.middlewareNames.toString()
+            binding.settings.tvLoggerVersion.text =
+                getString(R.string.logger_kit_format_logger_version, Logger.VERSION)
+            binding.settings.tvLoggerKitVersion.text =
+                getString(R.string.logger_kit_format_logger_kit_version, LoggerKit.VERSION)
+            binding.settings.tvLoggerKitDebug.text =
+                getString(
+                    R.string.logger_kit_format_logger_debug_mode,
+                    LoggerKit.Debugger.printDebug
+                )
+            binding.settings.btnDebugMode.text = getString(
+                if (!LoggerKit.Debugger.printDebug) R.string.logger_kit_settings_action_debug_mode_enable
+                else R.string.logger_kit_settings_action_debug_mode_disable
+            )
+            binding.settings.tvSessionId.text =
+                getString(R.string.logger_kit_format_logger_session_id, LoggerKit.Config.sessionId)
         }
     }
 
@@ -103,6 +140,15 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
     private fun setupSettingsUi() {
         binding.btnSettings.setOnClickListener {
             viewModel.onSettingsClick()
+            viewModel.loadStats()
+        }
+        binding.settings.btnDebugMode.setOnClickListener {
+            LoggerKit.setDebugMode(!LoggerKit.Debugger.printDebug)
+            viewModel.loadStats()
+        }
+        binding.settings.btnSessionId.setOnClickListener {
+            LoggerKit.generateSessionId()
+            viewModel.loadStats()
         }
         binding.settings.btnDatabaseClear.setOnClickListener {
             viewModel.clearLoggerDatabase()

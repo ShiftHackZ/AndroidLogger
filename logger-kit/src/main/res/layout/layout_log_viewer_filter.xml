@@ -20,7 +20,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="8dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
         android:text="@string/logger_kit_filter_placeholder_timestamp_range"
         app:drawableLeftCompat="@drawable/ic_log_item_date"
         app:drawableStartCompat="@drawable/ic_log_item_date"
@@ -40,57 +41,62 @@
 
     <EditText
         android:id="@+id/etClass"
-        android:layout_width="match_parent"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="12dp"
         android:hint="@string/logger_kit_filter_placeholder_class"
         android:imeOptions="actionDone"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnTimestampRange" />
 
     <EditText
         android:id="@+id/etTag"
-        android:layout_width="match_parent"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="12dp"
         android:hint="@string/logger_kit_filter_placeholder_tag"
         android:imeOptions="actionDone"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etClass" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintTop_toBottomOf="@+id/btnTimestampRange" />
 
     <EditText
         android:id="@+id/etMessage"
-        android:layout_width="match_parent"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="12dp"
         android:hint="@string/logger_kit_filter_placeholder_message"
         android:imeOptions="actionDone"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etTag" />
 
     <EditText
         android:id="@+id/etSessionId"
-        android:layout_width="match_parent"
+        style="@style/LoggerKit.EditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="12dp"
         android:hint="@string/logger_kit_filter_placeholder_session_id"
         android:imeOptions="actionDone"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etMessage" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical50"
+        app:layout_constraintTop_toBottomOf="@+id/etTag" />
 
     <Button
         android:id="@+id/btnClear"
+        style="@style/LoggerKit.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="12dp"
         android:text="@string/logger_kit_filter_action_clear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -7,6 +7,7 @@ import com.shz.logger.LoggerType
 import com.shz.logger.kit.LoggerKit
 import com.shz.logger.kit.database.entity.LogEntity
 import com.shz.logger.kit.presentation.filter.LogFilter
+import com.shz.logger.kit.presentation.filter.LogStats
 import com.shz.logger.kit.repository.LogLocalRepository
 import com.shz.logger.kit.utils.LoggerLiveEvent
 import com.shz.logger.kit.utils.rearrange
@@ -19,6 +20,7 @@ class LogViewerViewModel : ViewModel() {
     val entryCount = LoggerLiveEvent<Int>()
 
     val uiSettingsVisibility = LoggerLiveEvent<Boolean>()
+    val uiSettingsStats = LoggerLiveEvent<LogStats>()
     val uiFiltersVisibility = LoggerLiveEvent<Boolean>()
     val uiFiltersData = LoggerLiveEvent<LogFilter>()
     val uiFiltersClear = LoggerLiveEvent<Unit>()
@@ -32,6 +34,10 @@ class LogViewerViewModel : ViewModel() {
         uiFiltersData.value = filter
         entryCount.value = 0
         LoggerKit.Debugger.print("UI", "ViewModel initialization successful")
+    }
+
+    fun loadStats() {
+        uiSettingsStats.value = LogStats()
     }
 
     fun getLogs() {

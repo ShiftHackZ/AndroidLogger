@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,13 +10,164 @@
     tools:ignore="ContentDescription"
     tools:visibility="visible">
 
-    <Button
-        android:id="@+id/btnDatabaseClear"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:text="@string/logger_kit_settings_action_database_clear"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp" />
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvHeaderStats"
+            style="@style/LoggerKit.HeadingTextAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:text="@string/logger_kit_settings_header_stats"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvMiddlewareCount"
+            style="@style/LoggerKit.ItemTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeaderStats"
+            tools:text="@string/logger_kit_format_middleware_count" />
+
+        <TextView
+            android:id="@+id/tvMiddlewareList"
+            style="@style/LoggerKit.ItemTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMiddlewareCount"
+            tools:text="=" />
+
+        <TextView
+            android:id="@+id/tvLoggerVersion"
+            style="@style/LoggerKit.ItemTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMiddlewareList"
+            tools:text="@string/logger_kit_format_logger_version" />
+
+        <TextView
+            android:id="@+id/tvLoggerKitVersion"
+            style="@style/LoggerKit.ItemTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoggerVersion"
+            tools:text="@string/logger_kit_format_logger_kit_version" />
+
+        <TextView
+            android:id="@+id/tvLoggerKitDebug"
+            style="@style/LoggerKit.ItemTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoggerKitVersion"
+            tools:text="@string/logger_kit_format_logger_debug_mode" />
+
+        <TextView
+            android:id="@+id/tvSessionId"
+            style="@style/LoggerKit.ItemTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoggerKitDebug"
+            tools:text="@string/logger_kit_format_logger_session_id" />
+
+        <TextView
+            android:id="@+id/tvHeaderActions"
+            style="@style/LoggerKit.HeadingTextAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingHorizontal="16dp"
+            android:text="@string/logger_kit_settings_header_actions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSessionId" />
+
+        <Button
+            android:id="@+id/btnDebugMode"
+            style="@style/LoggerKit.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/logger_kit_settings_action_debug_mode_enable"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeaderActions" />
+
+        <Button
+            android:id="@+id/btnSessionId"
+            style="@style/LoggerKit.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/logger_kit_settings_action_generate_session_id"
+            app:layout_constraintTop_toBottomOf="@+id/btnDebugMode" />
+
+
+        <Button
+            android:id="@+id/btnDatabaseClear"
+            style="@style/LoggerKit.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/logger_kit_settings_action_database_clear"
+            app:layout_constraintTop_toBottomOf="@+id/btnSessionId" />
+
+        <TextView
+            android:id="@+id/tvHeaderCredits"
+            style="@style/LoggerKit.HeadingTextAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="16dp"
+            android:text="@string/logger_kit_settings_header_credits"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDatabaseClear" />
+
+        <TextView
+            android:id="@+id/tvCreditsLine1"
+            style="@style/LoggerKit.ItemTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="16dp"
+            android:text="Dmitriy Moroz (ShiftHackZ)\nhttps://moroz.cc\n2021"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeaderCredits" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
