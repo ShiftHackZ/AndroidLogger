@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logger_kit_viewer_title">LoggerKit</string>
+    <string name="logger_kit_format_entry_count">Всего: %1$s логов</string>
+    <string name="logger_kit_format_middleware_count">Промежуточное ПО: %1$s экземпляров</string>
+    <string name="logger_kit_format_logger_version">Версия Logger: %1$s</string>
+    <string name="logger_kit_format_logger_kit_version">Версия LoggerKit: %1$s</string>
+    <string name="logger_kit_format_logger_debug_mode">Режим отладки: %1$s</string>
+    <string name="logger_kit_format_logger_session_id">Сессионный ID: %1$s</string>
+    <string name="logger_kit_filter_placeholder_timestamp_range">Диапазон дат</string>
+    <string name="logger_kit_filter_placeholder_class">Имя класса</string>
+    <string name="logger_kit_filter_placeholder_tag">Префикс</string>
+    <string name="logger_kit_filter_placeholder_message">Сообщение</string>
+    <string name="logger_kit_filter_placeholder_session_id">Сессионный ID</string>
+    <string name="logger_kit_filter_action_clear">Очистить фильтр</string>
+    <string name="logger_kit_state_empty_title">Тут ничего нет</string>
+    <string name="logger_kit_state_empty_sub_title">Попробуйте сменить фильтр, или что-то залоггировать ;)</string>
+    <string name="logger_kit_settings_action_database_clear">Очистить базу данных</string>
+    <string name="logger_kit_settings_action_debug_mode_enable">Включить режим отладки</string>
+    <string name="logger_kit_settings_action_debug_mode_disable">Выключить режим отладки</string>
+    <string name="logger_kit_settings_action_generate_session_id">Сгенерировать сессионный id</string>
+    <string name="logger_kit_settings_header_stats">Статистика</string>
+    <string name="logger_kit_settings_header_actions">Действия</string>
+    <string name="logger_kit_settings_header_credits">О программе</string>
+</resources>
