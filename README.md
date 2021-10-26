@@ -90,7 +90,7 @@ There is no need to implement **Logger** core 'com.github.ShiftHackZ.AndroidLogg
 
 ### Screenshots
 
-<img src="https://raw.githubusercontent.com/ShiftHackZ/AndroidLogger/master/screenshots/logger_1.png" width="270" /> <img src="https://raw.githubusercontent.com/ShiftHackZ/AndroidLogger/master/screenshots/logger_2.png" width="270" /> <img src="https://raw.githubusercontent.com/ShiftHackZ/AndroidLogger/master/screenshots/logger_3.png" width="270" />
+<img src="https://raw.githubusercontent.com/ShiftHackZ/AndroidLogger/master/screenshots/logger_1.png" width="260" /> <img src="https://raw.githubusercontent.com/ShiftHackZ/AndroidLogger/master/screenshots/logger_2.png" width="260" /> <img src="https://raw.githubusercontent.com/ShiftHackZ/AndroidLogger/master/screenshots/logger_3.png" width="260" />
 
 ### Usage example
 1. Optional: Implement some class that extends from **LoggerMiddleware** interface (see <a href="https://github.com/ShiftHackZ/AndroidLogger/blob/master/logger/src/main/java/com/shz/logger/middleware/LoggerNetworkMiddleware.kt">this example</a>);
