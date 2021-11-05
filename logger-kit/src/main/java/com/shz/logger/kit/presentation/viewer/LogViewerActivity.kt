@@ -59,6 +59,17 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         LoggerKit.Debugger.print("UI", "LoggerKit viewer started")
     }
 
+    override fun onBackPressed() {
+        viewModel.uiSettingsVisibility.value?.let { settingsVisible ->
+            when (settingsVisible) {
+                true -> viewModel.uiSettingsVisibility.value = false
+                else ->  super.onBackPressed()
+            }
+        } ?: run {
+            super.onBackPressed()
+        }
+    }
+
     override fun onDestroy() {
         stopLogUpdates()
         super.onDestroy()
