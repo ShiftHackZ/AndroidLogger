@@ -1,18 +1,19 @@
 package com.shz.logger.kit.presentation.viewer
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.shz.logger.Logger
-import com.shz.logger.LoggerType
 import com.shz.logger.kit.LoggerKit
 import com.shz.logger.kit.R
 import com.shz.logger.kit.base.BaseLoggerKitActivity
@@ -29,6 +30,14 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
 
     private val logViewerAdapter = LogViewerAdapter()
 
+    private val liveLogsObserver: Observer<Int> = Observer {
+        if (perfromLiveUpdates) viewModel.getLogs()
+    }
+
+    private var perfromLiveUpdates = false
+
+    private var performScrollToTop = false
+
     private lateinit var viewModel: LogViewerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +47,6 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             WindowInsetsControllerCompat(window, window.decorView).apply {
                 isAppearanceLightStatusBars = true
             }
-        } else {
-            window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
         supportActionBar?.hide()
         binding.rvLogs.adapter = logViewerAdapter
@@ -47,13 +54,26 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         setupFiltersUi()
         setupSettingsUi()
         setupViewModel()
+        startLogUpdates()
         viewModel.getLogs()
         LoggerKit.Debugger.print("UI", "LoggerKit viewer started")
     }
 
+    override fun onDestroy() {
+        stopLogUpdates()
+        super.onDestroy()
+    }
+
     @SuppressLint("StringFormatMatches")
     private fun setupViewModel() {
-        viewModel.logs.observeNotNull(this, logViewerAdapter::submitList)
+        viewModel.logs.observeNotNull(this) {
+            logViewerAdapter.submitList(it)
+            if (performScrollToTop) runOnUiThread {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.rvLogs.layoutManager?.scrollToPosition(0)
+                }, 250L)
+            }
+        }
         viewModel.share.observeNotNull(this) {
             LoggerKit.Debugger.print("SHARE", "Trying to share ${it.size} entries")
             LoggerShareUtility.shareAsFile(this, it)
@@ -99,12 +119,19 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
                     R.string.logger_kit_format_logger_debug_mode,
                     LoggerKit.Debugger.printDebug
                 )
-            binding.settings.btnDebugMode.text = getString(
-                if (!LoggerKit.Debugger.printDebug) R.string.logger_kit_settings_action_debug_mode_enable
-                else R.string.logger_kit_settings_action_debug_mode_disable
-            )
+            //binding.settings.swDebugMode.isChecked = LoggerKit.Debugger.printDebug
             binding.settings.tvSessionId.text =
                 getString(R.string.logger_kit_format_logger_session_id, LoggerKit.Config.sessionId)
+        }
+        viewModel.uiScrollToTop.observeNotNull(this) {
+            performScrollToTop = it
+            binding.settings.swScrollToTop.isChecked = it
+        }
+        viewModel.uiListenLogUpdates.observeNotNull(this) {
+            perfromLiveUpdates = it
+            binding.settings.swLiveUpdates.isChecked = it
+            binding.tvLive.showcase(it)
+            binding.settings.swScrollToTop.showcase(it)
         }
     }
 
@@ -142,8 +169,14 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             viewModel.onSettingsClick()
             viewModel.loadStats()
         }
-        binding.settings.btnDebugMode.setOnClickListener {
-            LoggerKit.setDebugMode(!LoggerKit.Debugger.printDebug)
+        binding.settings.swLiveUpdates.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.uiListenLogUpdates.value = isChecked
+        }
+        binding.settings.swScrollToTop.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.uiScrollToTop.value = isChecked
+        }
+        binding.settings.swDebugMode.setOnCheckedChangeListener { _, isChecked ->
+            LoggerKit.Debugger.printDebug = isChecked
             viewModel.loadStats()
         }
         binding.settings.btnSessionId.setOnClickListener {
@@ -153,6 +186,20 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         binding.settings.btnDatabaseClear.setOnClickListener {
             viewModel.clearLoggerDatabase()
         }
+    }
+
+    private fun startLogUpdates() {
+        if (!viewModel.eventLogsUpdated.hasActiveObservers()) {
+            viewModel.eventLogsUpdated.observeForever(liveLogsObserver)
+        }
+    }
+
+    private fun stopLogUpdates() {
+        if (viewModel.eventLogsUpdated.hasActiveObservers()) {
+            viewModel.eventLogsUpdated.removeObserver(liveLogsObserver)
+        }
+        viewModel.eventLogsUpdated.removeObservers(this)
+        viewModel.uiScrollToTop.value = false
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

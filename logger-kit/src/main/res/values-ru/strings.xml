@@ -16,8 +16,9 @@
     <string name="logger_kit_state_empty_title">Тут ничего нет</string>
     <string name="logger_kit_state_empty_sub_title">Попробуйте сменить фильтр, или что-то залоггировать ;)</string>
     <string name="logger_kit_settings_action_database_clear">Очистить базу данных</string>
-    <string name="logger_kit_settings_action_debug_mode_enable">Включить режим отладки</string>
-    <string name="logger_kit_settings_action_debug_mode_disable">Выключить режим отладки</string>
+    <string name="logger_kit_settings_action_live_updates">Обновлять в реальном времени</string>
+    <string name="logger_kit_settings_action_scroll_to_top">Прокручивать список вверх</string>
+    <string name="logger_kit_settings_action_debug_mode">Режим отладки</string>
     <string name="logger_kit_settings_action_generate_session_id">Сгенерировать сессионный id</string>
     <string name="logger_kit_settings_header_stats">Статистика</string>
     <string name="logger_kit_settings_header_actions">Действия</string>

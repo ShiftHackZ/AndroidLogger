@@ -16,8 +16,9 @@
     <string name="logger_kit_state_empty_title">There is nothing here</string>
     <string name="logger_kit_state_empty_sub_title">Try to change filters, or just log something ;)</string>
     <string name="logger_kit_settings_action_database_clear">Clear Database</string>
-    <string name="logger_kit_settings_action_debug_mode_enable">Enable debug mode</string>
-    <string name="logger_kit_settings_action_debug_mode_disable">Disable debug mode</string>
+    <string name="logger_kit_settings_action_live_updates">Listen live updates</string>
+    <string name="logger_kit_settings_action_scroll_to_top">Scroll to top</string>
+    <string name="logger_kit_settings_action_debug_mode">Debug mode</string>
     <string name="logger_kit_settings_action_generate_session_id">Generate new session-id</string>
     <string name="logger_kit_settings_header_stats">Statistics</string>
     <string name="logger_kit_settings_header_actions">Actions</string>

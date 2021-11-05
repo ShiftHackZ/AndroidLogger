@@ -189,6 +189,10 @@ object LoggerKit {
          */
         var printDebug: Boolean = false
 
+        fun toggle() {
+            printDebug = !printDebug
+        }
+
         fun print(prefix: String, message: String, e: Throwable? = null) {
             if (printDebug) Logger.print(LoggerType.INFO, LoggerKit::class, prefix, message, e)
         }

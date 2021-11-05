@@ -34,6 +34,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbarPlaceholder" />
 
+    <TextView
+        android:id="@+id/tvLive"
+        style="@style/LoggerKit.HeadingTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Live"
+        android:textColor="#FA5757"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tvViewerTitle"
+        app:layout_constraintStart_toEndOf="@+id/tvViewerTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvViewerTitle"
+        tools:visibility="visible"/>
+
     <ImageView
         android:id="@+id/ivFilterIndicator"
         android:layout_width="10dp"
@@ -111,6 +126,17 @@
         android:paddingVertical="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="@string/logger_kit_format_entry_count" />
+
+    <TextView
+        android:id="@+id/tvTest"
+        style="@style/LoggerKit.ItemTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvStatus"
+        app:layout_constraintBottom_toBottomOf="@id/tvStatus"
+        tools:text="0" />
 
     <include
         android:id="@+id/emptyState"

@@ -49,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvMiddlewareCount"
-            tools:text="=" />
+            tools:text="[AnalyticsMiddleware, CrashReportingMiddleware]" />
 
         <TextView
             android:id="@+id/tvLoggerVersion"
@@ -115,15 +115,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSessionId" />
 
-        <Button
-            android:id="@+id/btnDebugMode"
-            style="@style/LoggerKit.Button"
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swLiveUpdates"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
-            android:text="@string/logger_kit_settings_action_debug_mode_enable"
+            android:checked="false"
+            android:text="@string/logger_kit_settings_action_live_updates"
+            android:textSize="@dimen/loggerKitSwitchSize"
             app:layout_constraintTop_toBottomOf="@+id/tvHeaderActions" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swScrollToTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:checked="false"
+            android:text="@string/logger_kit_settings_action_scroll_to_top"
+            android:textSize="@dimen/loggerKitSwitchSize"
+            app:layout_constraintTop_toBottomOf="@+id/swLiveUpdates" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swDebugMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:checked="false"
+            android:text="@string/logger_kit_settings_action_debug_mode"
+            android:textSize="@dimen/loggerKitSwitchSize"
+            app:layout_constraintTop_toBottomOf="@+id/swScrollToTop" />
 
         <Button
             android:id="@+id/btnSessionId"
@@ -132,8 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:text="@string/logger_kit_settings_action_generate_session_id"
-            app:layout_constraintTop_toBottomOf="@+id/btnDebugMode" />
-
+            app:layout_constraintTop_toBottomOf="@+id/swDebugMode" />
 
         <Button
             android:id="@+id/btnDatabaseClear"

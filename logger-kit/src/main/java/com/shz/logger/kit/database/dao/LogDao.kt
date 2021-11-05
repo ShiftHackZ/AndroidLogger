@@ -1,5 +1,6 @@
 package com.shz.logger.kit.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.shz.logger.kit.database.contract.LogEntityContract
@@ -16,4 +17,7 @@ interface LogDao {
 
     @Query("DELETE FROM ${LogEntityContract.TABLE_NAME}")
     fun clear()
+
+    @Query("SELECT COUNT(${LogEntityContract.ID}) FROM ${LogEntityContract.TABLE_NAME}")
+    fun observeCount(): LiveData<Int>
 }

@@ -1,10 +1,11 @@
 package com.shz.logger.kit.presentation.viewer
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shz.logger.Logger
 import com.shz.logger.LoggerType
 import com.shz.logger.kit.LoggerKit
+import com.shz.logger.kit.database.LoggerDatabaseProvider
 import com.shz.logger.kit.database.entity.LogEntity
 import com.shz.logger.kit.presentation.filter.LogFilter
 import com.shz.logger.kit.presentation.filter.LogStats
@@ -24,6 +25,11 @@ class LogViewerViewModel : ViewModel() {
     val uiFiltersVisibility = LoggerLiveEvent<Boolean>()
     val uiFiltersData = LoggerLiveEvent<LogFilter>()
     val uiFiltersClear = LoggerLiveEvent<Unit>()
+    val uiListenLogUpdates = LoggerLiveEvent<Boolean>()
+    val uiScrollToTop = LoggerLiveEvent<Boolean>()
+
+    val eventLogsUpdated: LiveData<Int>
+        get() = repository.observeLogCount()
 
     private val repository = LogLocalRepository()
     private var filter: LogFilter = LogFilter()
@@ -32,6 +38,8 @@ class LogViewerViewModel : ViewModel() {
         uiSettingsVisibility.value = false
         uiFiltersVisibility.value = false
         uiFiltersData.value = filter
+        uiListenLogUpdates.value = false
+        uiScrollToTop.value = false
         entryCount.value = 0
         LoggerKit.Debugger.print("UI", "ViewModel initialization successful")
     }

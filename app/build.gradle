@@ -40,5 +40,8 @@ dependencies {
     api androidx.core
     api androidx.appcompat
     api androidx.constraintlayout
+    api reactivex.rxjava
+    api reactivex.rxkotlin
+    api reactivex.rxandroid
     api google.material
 }
