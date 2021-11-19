@@ -6,7 +6,7 @@ import com.shz.logger.kit.presentation.filter.LogFilter
 
 private const val SQL_LIKE_PREDICATE = "LIKE '%' || ? || '%'"
 
-fun mapFilterToQuery(filter: LogFilter): SimpleSQLiteQuery {
+internal fun mapFilterToQuery(filter: LogFilter): SimpleSQLiteQuery {
     val order = "ORDER BY ${LogEntityContract.TIMESTAMP} DESC"
     var request = "SELECT * FROM ${LogEntityContract.TABLE_NAME} "
     val args = arrayListOf<Any>()

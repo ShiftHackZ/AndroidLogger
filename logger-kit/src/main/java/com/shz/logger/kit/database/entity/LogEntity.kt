@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.shz.logger.kit.database.contract.LogEntityContract
 
 @Entity(tableName = LogEntityContract.TABLE_NAME)
-data class LogEntity(
+internal data class LogEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = LogEntityContract.ID)
     val id: Long,

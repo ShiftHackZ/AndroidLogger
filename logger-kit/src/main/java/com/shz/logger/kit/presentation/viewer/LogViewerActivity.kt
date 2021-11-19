@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -31,10 +30,10 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
     private val logViewerAdapter = LogViewerAdapter()
 
     private val liveLogsObserver: Observer<Int> = Observer {
-        if (perfromLiveUpdates) viewModel.getLogs()
+        if (performLiveUpdates) viewModel.getLogs()
     }
 
-    private var perfromLiveUpdates = false
+    private var performLiveUpdates = false
 
     private var performScrollToTop = false
 
@@ -139,7 +138,7 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             binding.settings.swScrollToTop.isChecked = it
         }
         viewModel.uiListenLogUpdates.observeNotNull(this) {
-            perfromLiveUpdates = it
+            performLiveUpdates = it
             binding.settings.swLiveUpdates.isChecked = it
             binding.tvLive.showcase(it)
             binding.settings.swScrollToTop.showcase(it)

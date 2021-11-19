@@ -10,7 +10,7 @@ import com.shz.logger.kit.databinding.ItemLogBinding
 import com.shz.logger.kit.utils.formatTimestamp
 import com.shz.logger.kit.utils.showcase
 
-class LogViewerAdapter : ListAdapter<LogEntity, LogViewerAdapter.ViewHolder>(DIFF) {
+internal class LogViewerAdapter : ListAdapter<LogEntity, LogViewerAdapter.ViewHolder>(DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemLogBinding.inflate(LayoutInflater.from(parent.context), parent, false)

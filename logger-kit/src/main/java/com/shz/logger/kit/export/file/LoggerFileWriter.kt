@@ -6,7 +6,7 @@ import com.shz.logger.LoggerType
 import com.shz.logger.kit.LoggerKit
 import java.io.File
 
-object LoggerFileWriter {
+internal object LoggerFileWriter {
 
     fun writeToFile(context: Context, input: String): File {
         val filename = "logs_${context.applicationContext.packageName}_${System.currentTimeMillis()}.txt"

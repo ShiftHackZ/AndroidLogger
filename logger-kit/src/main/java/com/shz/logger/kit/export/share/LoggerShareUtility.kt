@@ -11,7 +11,7 @@ import com.shz.logger.kit.export.LoggerCollectionPrinter
 import com.shz.logger.kit.export.file.LoggerFileWriter
 import com.shz.logger.kit.utils.handle
 
-object LoggerShareUtility {
+internal object LoggerShareUtility {
 
     private val printer = LoggerCollectionPrinter()
 

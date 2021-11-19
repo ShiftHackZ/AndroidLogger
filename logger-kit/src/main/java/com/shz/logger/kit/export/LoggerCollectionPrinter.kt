@@ -4,7 +4,7 @@ import com.shz.logger.LoggerType
 import com.shz.logger.kit.database.entity.LogEntity
 import com.shz.logger.kit.utils.formatTimestamp
 
-class LoggerCollectionPrinter {
+internal class LoggerCollectionPrinter {
 
     fun createLogEntriesOutput(logs: List<LogEntity>): String {
         var result = ""

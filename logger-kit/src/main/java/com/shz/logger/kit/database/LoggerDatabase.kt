@@ -17,11 +17,11 @@ import com.shz.logger.kit.database.entity.LogEntity
     version = LoggerKit.Config.DB_VERSION,
     exportSchema = false
 )
-abstract class LoggerDatabase : RoomDatabase() {
+internal abstract class LoggerDatabase : RoomDatabase() {
     abstract fun logDao(): LogDao
 }
 
-object LoggerDatabaseProvider {
+internal object LoggerDatabaseProvider {
     private lateinit var database: LoggerDatabase
 
     fun init(context: Context) {

@@ -5,7 +5,7 @@ import com.shz.logger.TAG
 /**
  * Manager that contains whitelisted middleware that can't be removed during runtime.
  */
-object LoggerWhitelistedMiddleware {
+internal object LoggerWhitelistedMiddleware {
 
     /**
      * Part of com.shz.logger:logger-kit

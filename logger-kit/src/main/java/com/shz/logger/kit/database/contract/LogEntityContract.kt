@@ -1,6 +1,6 @@
 package com.shz.logger.kit.database.contract
 
-object LogEntityContract {
+internal object LogEntityContract {
     const val TABLE_NAME = "logs"
 
     const val ID = "id"

@@ -7,7 +7,7 @@ import com.shz.logger.kit.database.contract.LogEntityContract
 import com.shz.logger.kit.database.entity.LogEntity
 
 @Dao
-interface LogDao {
+internal interface LogDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: LogEntity)

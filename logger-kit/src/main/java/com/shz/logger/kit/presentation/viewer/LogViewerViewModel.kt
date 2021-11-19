@@ -14,7 +14,7 @@ import com.shz.logger.kit.utils.LoggerLiveEvent
 import com.shz.logger.kit.utils.rearrange
 import kotlinx.coroutines.launch
 
-class LogViewerViewModel : ViewModel() {
+internal class LogViewerViewModel : ViewModel() {
 
     val logs = LoggerLiveEvent<List<LogEntity>>()
     val share = LoggerLiveEvent<List<LogEntity>>()

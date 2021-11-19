@@ -10,7 +10,7 @@ import com.shz.logger.kit.database.entity.LogEntity
 import com.shz.logger.middleware.LoggerMiddleware
 import java.util.concurrent.Executors
 
-class DatabaseLoggerMiddleware(private val dao: LogDao) : LoggerMiddleware {
+internal class DatabaseLoggerMiddleware(private val dao: LogDao) : LoggerMiddleware {
 
     private val executorService = Executors.newFixedThreadPool(EXECUTOR_POOL_SIZE)
 
