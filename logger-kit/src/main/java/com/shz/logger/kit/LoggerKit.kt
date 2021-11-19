@@ -5,13 +5,17 @@ import android.content.Intent
 import androidx.room.Room
 import com.shz.logger.Logger
 import com.shz.logger.LoggerType
+import com.shz.logger.TAG
 import com.shz.logger.kit.database.LoggerDatabase
 import com.shz.logger.kit.database.LoggerDatabaseProvider
 import com.shz.logger.kit.middleware.DatabaseLoggerMiddleware
 import com.shz.logger.kit.presentation.viewer.LogViewerActivity
+import com.shz.logger.kit.presentation.viewer.LogViewerActivity.Companion.KEY_PAYLOAD
+import com.shz.logger.kit.presentation.viewer.LogViewerPayload
 import com.shz.logger.kit.utils.handle
 import com.shz.logger.middleware.LoggerMiddleware
 import java.util.*
+import kotlin.reflect.KClass
 
 /**
  * LoggerKit extends functionality of Logger library.
@@ -63,6 +67,8 @@ object LoggerKit {
     /**
      * Allows to define if [LoggerKit] should print it's own debug information to logs.
      * Note, [LoggerKit] debug messages does not processed by any of [LoggerMiddleware].
+     *
+     * @param debug logical flag of debugger enable state.
      */
     @JvmStatic
     fun setDebugMode(debug: Boolean): LoggerKit {
@@ -92,7 +98,45 @@ object LoggerKit {
         application.startActivity(
             Intent(application, LogViewerActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            })
+            }
+        )
+    }
+
+    /**
+     * Opens screen with filtered logs for some class.
+     * Allows to view only logs of passed class.
+     *
+     * @param clazz type of [KClass] for filtering;
+     * @param showOnlyCurrentSession if true shows only current session logs.
+     */
+    @JvmStatic
+    fun openLogViewer(
+        clazz: KClass<*>,
+        showOnlyCurrentSession: Boolean = true
+    ) = openLogViewer(clazz.java, showOnlyCurrentSession)
+
+    /**
+     * Opens screen with filtered logs for some class.
+     * Allows to view only logs of passed class.
+     *
+     * @param clazz type of [Class] for filtering;
+     * @param showOnlyCurrentSession if true shows only current session logs.
+     */
+    @JvmStatic
+    fun openLogViewer(
+        clazz: Class<*>,
+        showOnlyCurrentSession: Boolean = true
+    ) = handle {
+        Debugger.print("UI", "Requested to open LoggerKit viewer")
+        application.startActivity(
+            Intent(application, LogViewerActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra(KEY_PAYLOAD, LogViewerPayload(
+                    clazz.TAG,
+                    showOnlyCurrentSession
+                ))
+            }
+        )
     }
 
     /**
@@ -182,7 +226,6 @@ object LoggerKit {
     }
 
     object Debugger {
-
         /**
          * Flags that defines if [LoggerKit] should print it's own debug information to logs.
          * Note, [LoggerKit] debug messages does not processed by any of [LoggerMiddleware].

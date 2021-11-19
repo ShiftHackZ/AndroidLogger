@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -33,6 +34,10 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         if (performLiveUpdates) viewModel.getLogs()
     }
 
+    private val payload: LogViewerPayload? by lazy {
+        intent.getSerializableExtra(KEY_PAYLOAD) as LogViewerPayload?
+    }
+
     private var performLiveUpdates = false
 
     private var performScrollToTop = false
@@ -50,11 +55,11 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         supportActionBar?.hide()
         binding.rvLogs.adapter = logViewerAdapter
         viewModel = ViewModelProvider(this).get(LogViewerViewModel::class.java)
-        setupFiltersUi()
         setupSettingsUi()
         setupViewModel()
         startLogUpdates()
-        viewModel.getLogs()
+        setupFiltersUi()
+        handlePayload()
         LoggerKit.Debugger.print("UI", "LoggerKit viewer started")
     }
 
@@ -72,6 +77,15 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
     override fun onDestroy() {
         stopLogUpdates()
         super.onDestroy()
+    }
+
+    private fun handlePayload() = payload?.let {
+        binding.btnFilter.visibility = View.GONE
+        binding.tvViewerTitle.text = it.className
+        binding.ivFilterIndicator.alpha = 0f
+        viewModel.getByPayload(it)
+    } ?: run {
+        viewModel.getLogs()
     }
 
     @SuppressLint("StringFormatMatches")
@@ -150,10 +164,6 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
             viewModel.onFiltersClick()
             hideKeyboard()
         }
-        binding.btnShare.setOnClickListener {
-            viewModel.shareLogs()
-            hideKeyboard()
-        }
         binding.filters.btnTimestampRange.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) showTimestampDatePickers()
         }
@@ -175,6 +185,10 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
     }
 
     private fun setupSettingsUi() {
+        binding.btnShare.setOnClickListener {
+            viewModel.shareLogs()
+            hideKeyboard()
+        }
         binding.btnSettings.setOnClickListener {
             viewModel.onSettingsClick()
             viewModel.loadStats()
@@ -223,5 +237,9 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
                 viewModel.updateFilterTimestampRange(start.time to end.time)
             }
         }
+    }
+
+    companion object {
+        const val KEY_PAYLOAD = "payload"
     }
 }

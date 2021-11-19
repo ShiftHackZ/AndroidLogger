@@ -67,15 +67,24 @@
         android:id="@+id/btnLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAllCaps="false"
         android:text="Add log"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogs"
-        tools:layout_editor_absoluteX="25dp" />
+        app:layout_constraintBottom_toTopOf="@+id/btnMainActLogs" />
+
+    <Button
+        android:id="@+id/btnMainActLogs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="View [MainActivity] Logs"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogs" />
 
     <Button
         android:id="@+id/btnLogs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Logs"
+        android:textAllCaps="false"
+        android:text="View All Logs"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

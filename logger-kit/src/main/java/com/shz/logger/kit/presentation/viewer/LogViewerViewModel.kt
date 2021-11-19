@@ -57,6 +57,14 @@ internal class LogViewerViewModel : ViewModel() {
         }
     }
 
+    fun getByPayload(payload: LogViewerPayload) {
+        filter = filter.copy(
+            className = payload.className,
+            sessionId = if (payload.showOnlyCurrentSession) LoggerKit.Config.sessionId else null
+        )
+        getLogs()
+    }
+
     fun shareLogs() {
         viewModelScope.launch {
             repository.queryLogs(filter).let {

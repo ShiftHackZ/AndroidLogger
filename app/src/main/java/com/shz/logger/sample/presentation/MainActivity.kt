@@ -31,6 +31,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         btnLogs.setOnClickListener {
             LoggerKit.openLogViewer()
         }
+        btnMainActLogs.setOnClickListener {
+            LoggerKit.openLogViewer(MainActivity::class)
+        }
         btnLog.setOnClickListener {
             Logger.d(this::class, etPrefix.text.toString(), etMessage.text.toString())
             etPrefix.clear()
@@ -46,11 +49,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             .flatMapSingle { Single.just(it to testLogListenable) }
             .map { (index, enabled) ->
                 val prefix = when {
-                    binding.etPrefix.text.toString().isNotEmpty() -> binding.etPrefix.text.toString()
+                    binding.etPrefix.text.toString()
+                        .isNotEmpty() -> binding.etPrefix.text.toString()
                     else -> LIVE_PREFIX
                 }
                 val message = when {
-                    binding.etMessage.text.toString().isNotEmpty() -> binding.etMessage.text.toString()
+                    binding.etMessage.text.toString()
+                        .isNotEmpty() -> binding.etMessage.text.toString()
                     else -> "Hello from | $index | ${System.currentTimeMillis()}"
                 }
                 if (enabled) Logger.d(this::class, prefix, message)
