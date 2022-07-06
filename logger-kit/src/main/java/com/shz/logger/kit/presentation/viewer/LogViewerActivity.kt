@@ -1,7 +1,6 @@
 package com.shz.logger.kit.presentation.viewer
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.shz.logger.Logger
-import com.shz.logger.LoggerType
 import com.shz.logger.kit.LoggerKit
 import com.shz.logger.kit.R
 import com.shz.logger.kit.base.BaseLoggerKitActivity
@@ -21,6 +19,8 @@ import com.shz.logger.kit.export.share.LoggerShareUtility
 import com.shz.logger.kit.presentation.filter.LogFilter
 import com.shz.logger.kit.presentation.filter.mapPositionToLogType
 import com.shz.logger.kit.utils.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
 
@@ -153,6 +153,12 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
         binding.settings.btnDatabaseClear.setOnClickListener {
             viewModel.clearLoggerDatabase()
         }
+        binding.settings.tvCreditsLine1.text = StringBuilder().apply {
+            val year = SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
+            appendLine(CR_AUTHOR)
+            appendLine(CR_HOMEPAGE)
+            appendLine("$CR_YEAR_START - $year")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -166,5 +172,11 @@ class LogViewerActivity : BaseLoggerKitActivity<ActivityLogViewerBinding>() {
                 viewModel.updateFilterTimestampRange(start.time to end.time)
             }
         }
+    }
+
+    companion object {
+        private const val CR_AUTHOR = "Dmitriy Moroz (ShiftHackZ)"
+        private const val CR_HOMEPAGE = "https://moroz.cc"
+        private const val CR_YEAR_START = "2021"
     }
 }

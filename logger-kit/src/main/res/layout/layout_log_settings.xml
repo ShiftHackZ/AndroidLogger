@@ -163,11 +163,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:paddingHorizontal="16dp"
-            android:text="Dmitriy Moroz (ShiftHackZ)\nhttps://moroz.cc\n2021"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHeaderCredits" />
+            app:layout_constraintTop_toBottomOf="@+id/tvHeaderCredits"
+            tools:text="Dmitriy Moroz (ShiftHackZ)\nhttps://moroz.cc\n2021" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

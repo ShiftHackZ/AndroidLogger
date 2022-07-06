@@ -11,8 +11,6 @@ android {
     defaultConfig {
         minSdk 16
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -39,7 +37,7 @@ afterEvaluate {
                 from components.release
                 groupId = "com.shifthackz.logger"
                 artifactId = "logger"
-                version = "1.0"
+                version = "1.01"
             }
         }
     }
